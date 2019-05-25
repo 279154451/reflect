@@ -1,0 +1,30 @@
+package com.demo.singlecode.reflectdemo.proxy;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+/**
+ * 创建时间：2019/5/25
+ * 创建人：singleCode
+ * 功能描述：代购公司
+ **/
+public class ProxyCompany implements InvocationHandler {
+    private Object factory;//持有真实对象
+
+    public Object getProxyInstance(Class<?> factoryClass){
+        try {
+            factory = factoryClass.newInstance();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        return Proxy.newProxyInstance(factory.getClass().getClassLoader(),factory.getClass().getInterfaces(),this);
+    }
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        Object result = method.invoke(factory,args);//通过反射调用被代理对象的方法
+        return result;
+    }
+}
