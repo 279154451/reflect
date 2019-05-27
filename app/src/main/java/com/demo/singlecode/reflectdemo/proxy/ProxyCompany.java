@@ -20,11 +20,12 @@ public class ProxyCompany implements InvocationHandler {
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
-        return Proxy.newProxyInstance(factory.getClass().getClassLoader(),factory.getClass().getInterfaces(),this);
+//        返回代理对象
+        return Proxy.newProxyInstance(factoryClass.getClassLoader(),factory.getClass().getInterfaces(),this);
     }
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Object result = method.invoke(factory,args);//通过反射调用被代理对象的方法
+        Object result = method.invoke(factory,args);//通过反射调用被代理对象的方法，result即为接口的真实实现类的返回值
         return result;
     }
 }
